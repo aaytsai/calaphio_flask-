@@ -45,6 +45,15 @@ python manage.py shell
 ```
 to start an interpreter that would automatically set up connections with the local database for you to interact with.
 
+## Deploying a new version of the webapp to Dreamhost ##
+Just run 
+
+```
+#!bash
+
+fab deploy
+```
+and it should automatically deploy the app on Dreamhost. Please don't deploy broken code and check if the website is fine after any deployment
 
 # Contribution guidelines #
 

@@ -63,7 +63,7 @@ You should now have a database ready for development!
 
 ### Running Calaphio Server for development ###
 
-First make sure you have a CALAPHIO_CONFIG environment variable set. Add
+First make sure you have a CALAPHIO_CONFIG environment variable set. Add to your bash profile
 
 ```
 #!bash

@@ -51,12 +51,12 @@ mysql> CREATE DATABASE website;
 mysql> GRANT ALL ON website.* TO 'website'@'localhost';
 mysql> quit;
 ```
-Now that your database is created, load the data into your database by running
+Now that your database is created, load the data into your database by running. This command should take awhile to finish
 
 ```
 #!bash
 
-mysql website < website.sql
+sudo mysql website < website.sql
 ```
 
 You should now have a database ready for development!

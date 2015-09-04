@@ -8,12 +8,25 @@ Calaphio By Flask (And Python)
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+## Setting Up Python Environment ##
+
+We use Python 2.7 for compatibility with Dreamhost Python version. To install additional modules required to run the app, I recommend you use a virtualenv https://virtualenv.pypa.io/en/latest/ so you have a specialized Python environment to use for this webapp. Once you activate your environment, you can cd into the root of the repository and run
+
+```
+#!bash
+
+pip install -r requirements.txt
+```
+to install all modules required by the app. Please update requirements.txt by running
+
+```
+#!bash
+
+pip freeze > requirements.txt
+```
+whenever you add in a new required module.
+
+
 
 ### Contribution guidelines ###
 

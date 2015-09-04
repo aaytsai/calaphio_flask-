@@ -24,6 +24,16 @@ pip freeze > requirements.txt
 ```
 whenever you add in a new required module.
 
+### Setting up MySQL database for development ###
+The webapp expects the database to be named website and accessible by the "website" user. Start up downloading a copy of the database from the calaphio server by running
+
+```
+#!bash
+
+
+```
+
+
 ### Running Calaphio Server for development ###
 
 Simply run

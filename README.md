@@ -33,7 +33,7 @@ Simply run
 
 python manage.py runserver
 ```
-to start the development server. You should be able to reach your home page at localhost:5000.
+to start the development server. You should be able to reach your home page at http://localhost:5000.
 
 ## Starting Flask Shell ##
 Occasionally, you would want to start a Python interpreter and interact with database models of our calaphio webapp. To do so, run

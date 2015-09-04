@@ -45,10 +45,21 @@ Now you need to load the sql file into your database. To do so first create the 
 
 ```
 #!mysql
+sudo mysql
 
 mysql> CREATE DATABASE website;
-mysql>  
+mysql> GRANT ALL ON website.* TO 'website'@'localhost';
+mysql> quit;
 ```
+Now that your database is created, load the data into your database by running
+
+```
+#!bash
+
+mysql website < website.sql
+```
+
+You should now have a database ready for development!
 
 ### Running Calaphio Server for development ###
 

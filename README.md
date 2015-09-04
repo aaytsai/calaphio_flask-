@@ -1,12 +1,10 @@
-# README #
-
 Hey everyone! Thanks for contributing to developing on Calaphio! PLEASE READ THIS BEFORE DOING ANYTHING ON THIS REPOSITORY
 
-### What is this repository for? ###
+# What is this repository for? #
 
 Calaphio By Flask (And Python)
 
-### How do I get set up? ###
+# How do I get set up? #
 
 ## Setting Up Python Environment ##
 
@@ -26,9 +24,29 @@ pip freeze > requirements.txt
 ```
 whenever you add in a new required module.
 
+## Running Calaphio Server for development ##
+
+Simply run
+
+```
+#!bash
+
+python manage.py runserver
+```
+to start the development server. You should be able to reach your home page at localhost:5000.
+
+## Starting Flask Shell ##
+Occasionally, you would want to start a Python interpreter and interact with database models of our calaphio webapp. To do so, run
+
+```
+#!bash
+
+python manage.py shell
+```
+to start an interpreter that would automatically set up connections with the local database for you to interact with.
 
 
-### Contribution guidelines ###
+# Contribution guidelines #
 
 Please just make sure code is tested and is written well enough for other people to read it. Code quality is very important to make sure this codebase doesn't become unmanageable. PEP8 style guidelines are preferred https://www.python.org/dev/peps/pep-0008/ for nicely structured Python code. Don't do too many hacky things like hardcoding values or whatever so we can make this code nice and simple too. Also please use a rebase workflow for git http://randyfay.com/content/rebase-workflow-git so we don't have ugly merges in our git log.
 

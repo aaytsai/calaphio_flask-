@@ -63,7 +63,15 @@ You should now have a database ready for development!
 
 ### Running Calaphio Server for development ###
 
-Simply run
+First make sure you have a CALAPHIO_CONFIG environment variable set. Add
+
+```
+#!bash
+
+export CALAPHIO_CONFIG={YOUR_LOCAL_REPOSITORY_WORKING_DIRECTORY}/config.py   
+```
+
+Then simply run
 
 ```
 #!bash

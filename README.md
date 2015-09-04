@@ -6,7 +6,7 @@ Calaphio By Flask (And Python)
 
 # How do I get set up? #
 
-## Setting Up Python Environment ##
+### Setting Up Python Environment ###
 
 We use Python 2.7 for compatibility with Dreamhost Python version. To install additional modules required to run the app, I recommend you use a virtualenv https://virtualenv.pypa.io/en/latest/ so you have a specialized Python environment to use for this webapp. Once you activate your environment, you can cd into the root of the repository and run
 
@@ -24,7 +24,7 @@ pip freeze > requirements.txt
 ```
 whenever you add in a new required module.
 
-## Running Calaphio Server for development ##
+### Running Calaphio Server for development ###
 
 Simply run
 
@@ -35,7 +35,7 @@ python manage.py runserver
 ```
 to start the development server. You should be able to reach your home page at http://localhost:5000.
 
-## Starting Flask Shell ##
+### Starting Flask Shell ###
 Occasionally, you would want to start a Python interpreter and interact with database models of our calaphio webapp. To do so, run
 
 ```
@@ -45,7 +45,7 @@ python manage.py shell
 ```
 to start an interpreter that would automatically set up connections with the local database for you to interact with.
 
-## Deploying a new version of the webapp to Dreamhost ##
+### Deploying a new version of the webapp to Dreamhost ###
 Just run 
 
 ```
@@ -59,7 +59,7 @@ and it should automatically deploy the app on Dreamhost. Please don't deploy bro
 
 Please just make sure code is tested and is written well enough for other people to read it. Code quality is very important to make sure this codebase doesn't become unmanageable. PEP8 style guidelines are preferred https://www.python.org/dev/peps/pep-0008/ for nicely structured Python code. Don't do too many hacky things like hardcoding values or whatever so we can make this code nice and simple too. Also please use a rebase workflow for git http://randyfay.com/content/rebase-workflow-git so we don't have ugly merges in our git log.
 
-### Who do I talk to if I need help? ###
+# Who do I talk to if I need help? #
 
 Talk to people in this older until someone can help you
 

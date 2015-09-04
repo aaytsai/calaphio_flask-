@@ -30,9 +30,25 @@ The webapp expects the database to be named website and accessible by the "websi
 ```
 #!bash
 
+scp calaphio2@calaphio.com:~/website.tar.bz2 . 
+```
+Then untar this file
 
 ```
+#!bash
 
+tar -jxvf website.tar.bz2   
+```
+website.sql should be now in your directory.
+
+Now you need to load the sql file into your database. To do so first create the website database. Type mysql on your console to start the mysql command line.
+
+```
+#!mysql
+
+mysql> CREATE DATABASE website;
+mysql>  
+```
 
 ### Running Calaphio Server for development ###
 

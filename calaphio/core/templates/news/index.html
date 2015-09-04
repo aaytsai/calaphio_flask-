@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Webpage</title>
+</head>
+<body>
+    <h1>My Webpage</h1>
+
+    <ul id="navigation">
+    {% for newsitem in news %}
+        <li>{{ newsitem.body | sanitize_html }}</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

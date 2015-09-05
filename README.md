@@ -6,25 +6,29 @@ Calaphio By Flask (And Python)
 
 # How do I get set up? #
 
-### Setting Up Python Environment ###
+### Downloading MySQL ###
 
-We use Python 2.7 for compatibility with Dreamhost Python version. To install additional modules required to run the app, I recommend you use a virtualenv https://virtualenv.pypa.io/en/latest/ so you have a specialized Python environment to use for this webapp. Once you activate your environment, you can cd into the root of the repository and run
-
-```
-#!bash
-
-pip install -r requirements.txt
-```
-to install all modules required by the app. Please update requirements.txt by running
+We use MySQL to store data for calaphio. To install MySQL on your Ubuntu Machine, run
 
 ```
 #!bash
 
-pip freeze > requirements.txt
+sudo apt-get install mysql-server mysql-client
 ```
-whenever you add in a new required module.
+
+For mac, you will need to first install Homebrew, a package manager for MacOSx
+
+```
+#!bash
+
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew install mysql
+```
+
+
 
 ### Setting up MySQL database for development ###
+
 The webapp expects the database to be named website and accessible by the "website" user. Start up downloading a copy of the database from the calaphio server by running
 
 ```
@@ -60,6 +64,24 @@ sudo mysql website < website.sql
 ```
 
 You should now have a database ready for development!
+
+### Setting Up Python Environment ###
+
+We use Python 2.7 for compatibility with Dreamhost Python version. To install additional modules required to run the app, I recommend you use a virtualenv https://virtualenv.pypa.io/en/latest/ so you have a specialized Python environment to use for this webapp. Once you activate your environment, you can cd into the root of the repository and run
+
+```
+#!bash
+
+pip install -r requirements.txt
+```
+to install all modules required by the app. Please update requirements.txt by running
+
+```
+#!bash
+
+pip freeze > requirements.txt
+```
+whenever you add in a new required module.
 
 ### Running Calaphio Server for development ###
 

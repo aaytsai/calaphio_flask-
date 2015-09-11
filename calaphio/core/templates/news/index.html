@@ -1,15 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title>My Webpage</title>
-</head>
-<body>
+    <!-- CSRF Token included to prevent attacks on us to be used in AJAX requests -->
+    <script type="text/javascript" defer>
+      var csrftoken = "{{ csrf_token() }}"
+    </script>
+  </head>
+  <body>
     <h1>My Webpage</h1>
+    {% if not current_user.is_anonymous() %}
+      {{ current_user.firstname + " " + current_user.lastname }} <a href="{{ url_for("core.UsersView:logout") }}">Logout</a>
+    {% else %}
+      <form method="POST" action="{{ url_for("core.UsersView:login") }}">
+        {{ login_form.hidden_tag() }}
+        {{ login_form.email.label }} {{ login_form.email(size=40) }}
+        {{ login_form.password.label }} {{ login_form.password(size=20) }}
+        {{ login_form.remember_me.label }} {{ login_form.remember_me(size=20) }}
+        <input type="submit" value="submit">
+      </form>
+    {% endif %}
 
     <ul id="navigation">
     {% for newsitem in news %}
-        <li>{{ newsitem.body | sanitize_html }}</li>
+      <li>{{ newsitem.body | sanitize_html }}</li>
     {% endfor %}
     </ul>
+
+    <!-- CSRF Token included to prevent attacks on us. -->
+    <form method="post" action="/">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    </form>
 </body>
 </html>

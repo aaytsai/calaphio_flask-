@@ -15,3 +15,6 @@ def deploy():
 
     # Restart
     run('touch members2.calaphio.com/tmp/restart.txt')
+
+def restart():
+    run('touch members2.calaphio.com/tmp/restart.txt')

@@ -1,23 +1,25 @@
-from flask.ext.login import login_user, current_user, login_required, logout_user
-from calaphio import db
-
-from flask import abort, Blueprint, url_for, redirect, render_template
+from flask.ext.login import login_user, login_required, logout_user
+from flask import Blueprint, url_for, redirect, render_template
 from flask.ext.classy import FlaskView, route
+
+from calaphio import db
 from calaphio.core.forms import LoginForm
 from calaphio.core.models import Newsitem, User
 
-core = Blueprint('core', __name__, template_folder='templates', url_prefix='');
+
+core = Blueprint('core', __name__, template_folder='templates', static_folder="static", static_url_path='/static/core',
+                 url_prefix='');
+
 
 class NewsView(FlaskView):
-
     def index(self):
-        news = db.session.query(Newsitem).all()
+        news = db.session.query(Newsitem).order_by(Newsitem.created_at.desc()).all()
         login_form = LoginForm()
 
         return render_template('news/index.html', news=news, login_form=login_form)
 
-class UsersView(FlaskView):
 
+class UsersView(FlaskView):
     @route('/login', methods=["POST"])
     def login(self):
         login_form = LoginForm()

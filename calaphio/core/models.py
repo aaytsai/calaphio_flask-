@@ -16,17 +16,18 @@ class Newsitem(TimestampMixin, db.Model):
     pledge = db.Column(db.Boolean, nullable=False)
     everyone = db.Column(db.Boolean, nullable=False)
 
+
 class User(UserMixin, db.Model):
     __tablename__ = "apo_users"
 
     user_id = db.Column(db.Integer, primary_key=True)
 
-    #Login Info
+    # Login Info
     email = db.Column(db.String(255), nullable=False)
     passphrase = db.Column(db.String(40), nullable=False)
     salt = db.Column(db.String(32), nullable=False)
 
-    #User Info
+    # User Info
     firstname = db.Column(db.String(255), nullable=False)
     lastname = db.Column(db.String(255), nullable=False)
 

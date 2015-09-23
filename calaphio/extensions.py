@@ -51,6 +51,7 @@ class BetterBootstrapRenderer(BootstrapRenderer):
 def navbar():
     if current_user.is_active():
         return Navbar(Link("Members@Calaphio", "/"),
+                      Link("My Profile: " + current_user.fullname, "/"),
                       View("News", "core.NewsView:index"),
                       View("Logout", "core.UsersView:logout"))
     else:

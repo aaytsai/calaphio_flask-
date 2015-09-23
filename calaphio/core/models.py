@@ -55,6 +55,10 @@ class User(UserMixin, db.Model):
     def get_id(self):
         return unicode(self.user_id)
 
+    @property
+    def fullname(self):
+        return self.firstname + " " + self.lastname
+
 
 
 

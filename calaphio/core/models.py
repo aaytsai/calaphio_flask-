@@ -13,7 +13,7 @@ class Newsitem(TimestampMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     body = db.Column(db.Text(), nullable=False)
-    user_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, ForeignKey('apo_users.user_id'), nullable=False)
     active = db.Column(db.Boolean, nullable=False)
     pledge = db.Column(db.Boolean, nullable=False)
     everyone = db.Column(db.Boolean, nullable=False)
@@ -53,8 +53,10 @@ class User(UserMixin, db.Model):
     disabled = db.Column(db.Boolean, nullable=False)
     depledged = db.Column(db.Boolean, nullable=False)
 
+    # Relationships <3
     active_member = relationship(ActiveMember, uselist=False, backref="user")
     pledge_member = relationship(PledgeMember, uselist=False, backref="user")
+    posts = relationship(Newsitem, backref="poster")
 
     @classmethod
     def authenticate(cls, email, password):

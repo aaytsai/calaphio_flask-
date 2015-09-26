@@ -17,7 +17,7 @@
       {% if newsitem.can_be_viewed_by_current_user %}
       <div class="newsitem">
         <h2>{{ newsitem.title }}</h2>
-        <p class="date"><strong>{{ newsitem.created_at.strftime("%a %b %d, %Y @ %I:%M%p") }}</strong></p>
+        <p class="date"><strong>{{ newsitem.created_at.strftime("%a %b %d, %Y @ %I:%M%p") }} By {{ newsitem.poster.fullname }}</strong></p>
         <p class="body">{{ newsitem.body | sanitize_html }}</p>
       </div>
       {% endif %}

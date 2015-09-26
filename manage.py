@@ -1,4 +1,4 @@
-from flask.ext.script import Shell, Manager
+from flask_script import Shell, Manager
 
 from calaphio import create_app
 

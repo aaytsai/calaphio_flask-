@@ -1,0 +1,22 @@
+{% extends "news/base.html" %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('core.static', filename='css/news.css') }}">
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <form method="POST" action="{{ url_for("core.NewsView:post") }}">
+      {{ login_form.hidden_tag() }}
+      {{ wtf.form_errors(newsitem_form, hiddens="only") }}
+
+      {{ wtf.form_field(newsitem_form.title) }}
+      {{ wtf.form_field(newsitem_form.body) }}
+      {{ wtf.form_field(newsitem_form.active) }}
+      {{ wtf.form_field(newsitem_form.pledge) }}
+      {{ wtf.form_field(newsitem_form.everyone) }}
+      {{ wtf.form_field(newsitem_form.submit) }}
+    </form>
+  </div>
+{% endblock %}

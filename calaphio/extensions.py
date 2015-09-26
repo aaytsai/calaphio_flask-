@@ -1,14 +1,14 @@
 from dominate import tags
 from flask import abort
-from flask.ext.bootstrap import Bootstrap
-from flask.ext.bootstrap.nav import BootstrapRenderer
-from flask.ext.login import LoginManager, current_user
-from flask.ext.nav import Nav
-from flask.ext.nav.elements import Navbar, View, Link, NavigationItem
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_bootstrap import Bootstrap
+from flask_bootstrap.nav import BootstrapRenderer
+from flask_login import LoginManager, current_user
+from flask_nav import Nav
+from flask_nav.elements import Navbar, View, Link, NavigationItem
+from flask_sqlalchemy import SQLAlchemy
 
 # Flask-SQLAlchemy
-from flask.ext.wtf import CsrfProtect
+from flask_wtf import CsrfProtect
 
 db = SQLAlchemy()
 
@@ -50,10 +50,17 @@ class BetterBootstrapRenderer(BootstrapRenderer):
 @nav.navigation("navbar")
 def navbar():
     if current_user.is_active():
-        return Navbar(Link("Members@Calaphio", "/"),
-                      Link("My Profile: " + current_user.fullname, "/"),
-                      View("News", "core.NewsView:index"),
-                      View("Logout", "core.UsersView:logout"))
+        if current_user.is_admin:
+            return Navbar(Link("Members@Calaphio", "/"),
+                          Link("My Profile: " + current_user.fullname, "/"),
+                          View("News", "core.NewsView:index"),
+                          View("Post News", "core.NewsView:create"),
+                          View("Logout", "core.UsersView:logout"))
+        else:
+            return Navbar(Link("Members@Calaphio", "/"),
+                          Link("My Profile: " + current_user.fullname, "/"),
+                          View("News", "core.NewsView:index"),
+                          View("Logout", "core.UsersView:logout"))
     else:
         return Navbar(Link("Members@Calaphio", "/"),
                       View("News", "core.NewsView:index"),

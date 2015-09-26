@@ -1,6 +1,8 @@
 import hashlib
 
-from flask.ext.login import UserMixin
+from flask_login import UserMixin, current_user
+from sqlalchemy import orm, ForeignKey
+from sqlalchemy.orm import relationship
 
 from calaphio import db, TimestampMixin
 
@@ -15,6 +17,22 @@ class Newsitem(TimestampMixin, db.Model):
     active = db.Column(db.Boolean, nullable=False)
     pledge = db.Column(db.Boolean, nullable=False)
     everyone = db.Column(db.Boolean, nullable=False)
+
+    @property
+    def can_be_viewed_by_current_user(self):
+        return self.everyone or \
+               (self.active and current_user.is_active() and current_user.is_active_member) or\
+               (self.pledge and current_user.is_active() and current_user.is_pledge_member)
+
+class ActiveMember(db.Model):
+    __tablename__ = "apo_actives"
+
+    user_id = db.Column(db.Integer, ForeignKey('apo_users.user_id'), primary_key=True)
+
+class PledgeMember(db.Model):
+    __tablename__ = "apo_pledges"
+
+    user_id = db.Column(db.Integer, ForeignKey('apo_users.user_id'), primary_key=True)
 
 
 class User(UserMixin, db.Model):
@@ -34,6 +52,9 @@ class User(UserMixin, db.Model):
     # Fields used to determine if active
     disabled = db.Column(db.Boolean, nullable=False)
     depledged = db.Column(db.Boolean, nullable=False)
+
+    active_member = relationship(ActiveMember, uselist=False, backref="user")
+    pledge_member = relationship(PledgeMember, uselist=False, backref="user")
 
     @classmethod
     def authenticate(cls, email, password):
@@ -58,6 +79,19 @@ class User(UserMixin, db.Model):
     @property
     def fullname(self):
         return self.firstname + " " + self.lastname
+
+    @property
+    def is_active_member(self):
+        return self.active_member is not None
+
+    @property
+    def is_pledge_member(self):
+        return self.pledge_member is not None
+
+    @property
+    def is_admin(self):
+        #TODO ble better permissioning
+        return self.is_active()
 
 
 

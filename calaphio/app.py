@@ -1,5 +1,5 @@
 from flask import Flask
-from flask.ext.nav import register_renderer
+from flask_nav import register_renderer
 from jinja2 import Markup
 from scrubber import Scrubber
 

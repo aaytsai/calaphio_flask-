@@ -3,6 +3,7 @@ from fabric.operations import run, put
 
 env.hosts = ['calaphio2@calaphio.com']
 
+
 def deploy():
     # Transfer App
     put('calaphio', 'members2.calaphio.com')
@@ -15,6 +16,7 @@ def deploy():
 
     # Restart
     run('touch members2.calaphio.com/tmp/restart.txt')
+
 
 def restart():
     run('touch members2.calaphio.com/tmp/restart.txt')

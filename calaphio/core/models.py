@@ -24,10 +24,12 @@ class Newsitem(TimestampMixin, db.Model):
                (self.active and current_user.is_active() and current_user.is_active_member) or\
                (self.pledge and current_user.is_active() and current_user.is_pledge_member)
 
+
 class ActiveMember(db.Model):
     __tablename__ = "apo_actives"
 
     user_id = db.Column(db.Integer, ForeignKey('apo_users.user_id'), primary_key=True)
+
 
 class PledgeMember(db.Model):
     __tablename__ = "apo_pledges"

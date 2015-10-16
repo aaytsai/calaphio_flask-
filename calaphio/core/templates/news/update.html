@@ -7,7 +7,7 @@
 
 {% block content %}
   <div class="row">
-    <form method="POST" action="{{ url_for("core.NewsView:post") }}">
+    <form method="POST" action="{{ url_for("core.NewsView:put", id=id, __METHOD_OVERRIDE__="PUT") }}">
       {{ login_form.hidden_tag() }}
       {{ wtf.form_errors(newsitem_form, hiddens="only") }}
 

@@ -1,5 +1,5 @@
 from flask_login import login_user, login_required, logout_user, current_user
-from flask import Blueprint, url_for, redirect, render_template
+from flask import Blueprint, url_for, redirect, render_template, abort
 from flask_classy import FlaskView, route
 
 from calaphio import db
@@ -11,16 +11,18 @@ core = Blueprint('core', __name__, template_folder='templates', static_folder="s
 
 
 class NewsView(FlaskView):
+
     def index(self):
         news = db.session.query(Newsitem).order_by(Newsitem.created_at.desc()).all()
-        login_form = LoginForm()
 
         return render_template('news/index.html', news=news)
 
     def create(self):
-        newsitem_form = NewsitemForm()
+        if current_user.is_active() and current_user.is_admin:
+            newsitem_form = NewsitemForm()
+            return render_template('news/create.html', newsitem_form=newsitem_form)
 
-        return render_template('news/create.html', newsitem_form=newsitem_form);
+        abort(403)
 
     def post(self):
         newsitem_form = NewsitemForm()
@@ -36,8 +38,29 @@ class NewsView(FlaskView):
 
         return redirect(url_for("core.NewsView:index"))
 
-    def put(self):
-        pass
+    def update(self, id):
+        newsitem = Newsitem.query.get_or_404(id)
+        if current_user.is_active() and current_user.is_admin and newsitem.user_id == current_user.user_id:
+            newsitem_form = NewsitemForm(obj=newsitem)
+            return render_template('news/update.html', newsitem_form=newsitem_form, id=id)
+
+        abort(403)
+
+    def put(self, id):
+        print "HI"
+        newsitem = Newsitem.query.get_or_404(id)
+
+        newsitem_form = NewsitemForm()
+        # Only Poster can edit their own posting
+        if current_user.is_active() and current_user.is_admin and newsitem_form.validate_on_submit() \
+                and newsitem.user_id == current_user.user_id:
+            newsitem = Newsitem.query.get(id)
+            newsitem_form.populate_obj(newsitem)
+
+            db.session.add(newsitem)
+            db.session.commit()
+
+        return redirect(url_for("core.NewsView:index"))
 
     def delete(self):
         pass

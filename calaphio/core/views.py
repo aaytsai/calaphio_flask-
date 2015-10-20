@@ -26,8 +26,9 @@ class NewsView(FlaskView):
 
     def post(self):
         newsitem_form = NewsitemForm()
-        if current_user.is_active() and current_user.is_admin and newsitem_form.validate_on_submit():
-            newsitem = Newsitem()
+        newsitem = Newsitem()
+
+        if newsitem.can_be_edited_by_current_user and newsitem_form.validate_on_submit():
             newsitem_form.populate_obj(newsitem)
 
             # Add user_id
@@ -35,36 +36,41 @@ class NewsView(FlaskView):
 
             db.session.add(newsitem)
             db.session.commit()
+            return redirect(url_for("core.NewsView:index"))
 
-        return redirect(url_for("core.NewsView:index"))
+        abort(403)
 
     def update(self, id):
         newsitem = Newsitem.query.get_or_404(id)
-        if current_user.is_active() and current_user.is_admin and newsitem.user_id == current_user.user_id:
+        if newsitem.can_be_edited_by_current_user:
             newsitem_form = NewsitemForm(obj=newsitem)
             return render_template('news/update.html', newsitem_form=newsitem_form, id=id)
 
         abort(403)
 
     def put(self, id):
-        print "HI"
         newsitem = Newsitem.query.get_or_404(id)
 
         newsitem_form = NewsitemForm()
-        # Only Poster can edit their own posting
-        if current_user.is_active() and current_user.is_admin and newsitem_form.validate_on_submit() \
-                and newsitem.user_id == current_user.user_id:
-            newsitem = Newsitem.query.get(id)
+        if newsitem.can_be_edited_by_current_user and newsitem_form.validate_on_submit():
             newsitem_form.populate_obj(newsitem)
 
             db.session.add(newsitem)
             db.session.commit()
+            return redirect(url_for("core.NewsView:index"))
 
-        return redirect(url_for("core.NewsView:index"))
+        abort(403)
 
-    def delete(self):
-        pass
+    def delete(self, id):
+        newsitem = Newsitem.query.get_or_404(id)
 
+        # All Admins can Delete
+        if newsitem.can_be_edited_by_current_user:
+            db.session.delete(newsitem)
+            db.session.commit()
+            return redirect(url_for("core.NewsView:index"))
+
+        abort(403)
 
 class UsersView(FlaskView):
     @route('/login', methods=["POST"])

@@ -21,8 +21,14 @@ class Newsitem(TimestampMixin, db.Model):
     @property
     def can_be_viewed_by_current_user(self):
         return self.everyone or \
-               (self.active and current_user.is_active() and current_user.is_active_member) or\
+               (current_user.is_active() and current_user.is_admin) or \
+               (self.active and current_user.is_active() and current_user.is_active_member) or \
                (self.pledge and current_user.is_active() and current_user.is_pledge_member)
+
+    @property
+    def can_be_edited_by_current_user(self):
+        # All Admins can edit/delete
+        return current_user.is_active() and current_user.is_admin
 
 
 class ActiveMember(db.Model):

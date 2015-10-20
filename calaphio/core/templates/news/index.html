@@ -19,6 +19,11 @@
         <h2>{{ newsitem.title }}</h2>
         <p class="date"><strong>{{ newsitem.created_at.strftime("%a %b %d, %Y @ %I:%M%p") }} By {{ newsitem.poster.fullname }}</strong></p>
         <p class="body">{{ newsitem.body | sanitize_html }}</p>
+        {% if newsitem.can_be_edited_by_current_user %}
+        <form method="POST" action="{{ url_for("core.NewsView:delete", id=newsitem.id, __METHOD_OVERRIDE__="DELETE") }}">
+        <input type="submit" class="btn btn-default" value="Delete">
+        </form>
+        {% endif %}
       </div>
       {% endif %}
     {% endfor %}

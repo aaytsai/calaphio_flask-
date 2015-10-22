@@ -14,6 +14,8 @@ db = SQLAlchemy()
 
 # Flask-Login
 login_manager = LoginManager()
+login_manager.login_view = "core.NewsView:index"
+login_manager.login_message = "Please Login Before Performing That Action"
 
 # Flask-WTF
 csrf = CsrfProtect()

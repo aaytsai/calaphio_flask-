@@ -17,13 +17,15 @@ class NewsView(FlaskView):
 
         return render_template('news/index.html', news=news)
 
+    @login_required
     def create(self):
-        if current_user.is_active() and current_user.is_admin:
+        if current_user.is_admin:
             newsitem_form = NewsitemForm()
             return render_template('news/create.html', newsitem_form=newsitem_form)
 
         abort(403)
 
+    @login_required
     def post(self):
         newsitem_form = NewsitemForm()
         newsitem = Newsitem()
@@ -40,6 +42,7 @@ class NewsView(FlaskView):
 
         abort(403)
 
+    @login_required
     def update(self, id):
         newsitem = Newsitem.query.get_or_404(id)
         if newsitem.can_be_edited_by_current_user:
@@ -48,6 +51,7 @@ class NewsView(FlaskView):
 
         abort(403)
 
+    @login_required
     def put(self, id):
         newsitem = Newsitem.query.get_or_404(id)
 
@@ -61,6 +65,7 @@ class NewsView(FlaskView):
 
         abort(403)
 
+    @login_required
     def delete(self, id):
         newsitem = Newsitem.query.get_or_404(id)
 

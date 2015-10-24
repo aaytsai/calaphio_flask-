@@ -34,6 +34,7 @@ big_permission = Permission(RoleNeed("Big"), RoleNeed("Admin"), RoleNeed("WebCom
 wiki_permission = Permission(RoleNeed("Wiki"), RoleNeed("Admin"), RoleNeed("WebComm"), RoleNeed("ExComm"))
 active_permission = Permission(RoleNeed("Active"))
 pledge_permission = Permission(RoleNeed("Pledge"))
+member_permission = Permission(RoleNeed("Member"))
 
 # Flask-Nav
 nav = Nav()

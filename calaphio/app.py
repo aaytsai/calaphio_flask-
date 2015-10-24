@@ -53,6 +53,10 @@ def on_identity_loaded(sender, identity):
     if hasattr(current_user, 'pledge_member') and current_user.pledge_member is not None:
         identity.provides.add(RoleNeed("Pledge"))
 
+    # Add Member Role for all logged in users
+    if current_user.is_active():
+        identity.provides.add(RoleNeed("Member"))
+
 
 def create_app():
     app = Flask(__name__)

@@ -20,13 +20,13 @@ class NewsView(FlaskView):
         return render_template('news/index.html', news=news)
 
     @login_required
-    @excomm_permission.require()
+    @excomm_permission.require(http_exception=403)
     def create(self):
         newsitem_form = NewsitemForm()
         return render_template('news/create.html', newsitem_form=newsitem_form)
 
     @login_required
-    @excomm_permission.require()
+    @excomm_permission.require(http_exception=403)
     def post(self):
         newsitem_form = NewsitemForm()
         newsitem = Newsitem()
@@ -44,14 +44,14 @@ class NewsView(FlaskView):
         return redirect(url_for("core.NewsView:create"))
 
     @login_required
-    @excomm_permission.require()
+    @excomm_permission.require(http_exception=403)
     def update(self, id):
         newsitem = Newsitem.query.get_or_404(id)
         newsitem_form = NewsitemForm(obj=newsitem)
         return render_template('news/update.html', newsitem_form=newsitem_form, id=id)
 
     @login_required
-    @excomm_permission.require()
+    @excomm_permission.require(http_exception=403)
     def put(self, id):
         newsitem = Newsitem.query.get_or_404(id)
 
@@ -66,7 +66,7 @@ class NewsView(FlaskView):
         return redirect(url_for("core.NewsView:update", id))
 
     @login_required
-    @excomm_permission.require()
+    @excomm_permission.require(http_exception=403)
     def delete(self, id):
         newsitem = Newsitem.query.get_or_404(id)
 

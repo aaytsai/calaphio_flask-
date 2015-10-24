@@ -5,6 +5,7 @@ from flask_bootstrap.nav import BootstrapRenderer
 from flask_login import LoginManager, current_user
 from flask_nav import Nav
 from flask_nav.elements import Navbar, View, Link, NavigationItem
+from flask_principal import Principal, Permission, RoleNeed
 from flask_sqlalchemy import SQLAlchemy
 
 # Flask-SQLAlchemy
@@ -23,9 +24,19 @@ csrf = CsrfProtect()
 # Flask-Bootstrap
 bootstrap = Bootstrap()
 
+# Flask-Principle
+principal = Principal()
+admin_permission = Permission(RoleNeed("Admin"))
+webcomm_permission = Permission(RoleNeed("WebComm"), RoleNeed("Admin"))
+excomm_permission = Permission(RoleNeed("ExComm"), RoleNeed("Admin"), RoleNeed("WebComm"))
+PComm_permission = Permission(RoleNeed("PComm"), RoleNeed("Admin"), RoleNeed("WebComm"), RoleNeed("ExComm"))
+big_permission = Permission(RoleNeed("Big"), RoleNeed("Admin"), RoleNeed("WebComm"), RoleNeed("ExComm"))
+wiki_permission = Permission(RoleNeed("Wiki"), RoleNeed("Admin"), RoleNeed("WebComm"), RoleNeed("ExComm"))
+active_permission = Permission(RoleNeed("Active"))
+pledge_permission = Permission(RoleNeed("Pledge"))
+
 # Flask-Nav
 nav = Nav()
-
 
 @csrf.error_handler
 def csrf_error(reason):
@@ -52,7 +63,7 @@ class BetterBootstrapRenderer(BootstrapRenderer):
 @nav.navigation("navbar")
 def navbar():
     if current_user.is_active():
-        if current_user.is_admin:
+        if excomm_permission.can():
             return Navbar(Link("Members@Calaphio", "/"),
                           Link("My Profile: " + current_user.fullname, "/"),
                           View("News", "core.NewsView:index"),

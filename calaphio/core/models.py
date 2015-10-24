@@ -5,6 +5,7 @@ from sqlalchemy import orm, ForeignKey
 from sqlalchemy.orm import relationship
 
 from calaphio import db, TimestampMixin
+from calaphio.extensions import admin_permission, active_permission, pledge_permission
 
 
 class Newsitem(TimestampMixin, db.Model):
@@ -21,14 +22,9 @@ class Newsitem(TimestampMixin, db.Model):
     @property
     def can_be_viewed_by_current_user(self):
         return self.everyone or \
-               (current_user.is_active() and current_user.is_admin) or \
-               (self.active and current_user.is_active() and current_user.is_active_member) or \
-               (self.pledge and current_user.is_active() and current_user.is_pledge_member)
-
-    @property
-    def can_be_edited_by_current_user(self):
-        # All Admins can edit/delete
-        return current_user.is_active() and current_user.is_admin
+               admin_permission.can() or \
+               (self.active and active_permission.can()) or \
+               (self.pledge and pledge_permission.can())
 
 
 class ActiveMember(db.Model):
@@ -42,6 +38,10 @@ class PledgeMember(db.Model):
 
     user_id = db.Column(db.Integer, ForeignKey('apo_users.user_id'), primary_key=True)
 
+user_roles = db.Table('apo_permissions_groups',
+    db.Column('group_id', db.Integer, ForeignKey('apo_permissions_groups_control.group_id')),
+    db.Column('user_id', db.Integer, ForeignKey('apo_users.user_id'))
+)
 
 class User(UserMixin, db.Model):
     __tablename__ = "apo_users"
@@ -65,6 +65,7 @@ class User(UserMixin, db.Model):
     active_member = relationship(ActiveMember, uselist=False, backref="user")
     pledge_member = relationship(PledgeMember, uselist=False, backref="user")
     posts = relationship(Newsitem, backref="poster")
+    roles = relationship("Role", secondary=user_roles, backref="users")
 
     @classmethod
     def authenticate(cls, email, password):
@@ -90,19 +91,12 @@ class User(UserMixin, db.Model):
     def fullname(self):
         return self.firstname + " " + self.lastname
 
-    @property
-    def is_active_member(self):
-        return self.active_member is not None
 
-    @property
-    def is_pledge_member(self):
-        return self.pledge_member is not None
+class Role(db.Model):
+    __tablename__ = "apo_permissions_groups_control"
 
-    @property
-    def is_admin(self):
-        #TODO ble better permissioning
-        return self.is_active()
-
+    group_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
 
 
 

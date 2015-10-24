@@ -1,10 +1,12 @@
 from flask_login import login_user, login_required, logout_user, current_user
-from flask import Blueprint, url_for, redirect, render_template, abort
+from flask import Blueprint, url_for, redirect, render_template, abort, session, current_app
 from flask_classy import FlaskView, route
+from flask_principal import identity_changed, AnonymousIdentity, Identity
 
 from calaphio import db
 from calaphio.core.forms import LoginForm, NewsitemForm
 from calaphio.core.models import Newsitem, User
+from calaphio.extensions import excomm_permission
 
 core = Blueprint('core', __name__, template_folder='templates', static_folder="static", static_url_path='/static/core',
                  url_prefix='');
@@ -18,19 +20,18 @@ class NewsView(FlaskView):
         return render_template('news/index.html', news=news)
 
     @login_required
+    @excomm_permission.require()
     def create(self):
-        if current_user.is_admin:
-            newsitem_form = NewsitemForm()
-            return render_template('news/create.html', newsitem_form=newsitem_form)
-
-        abort(403)
+        newsitem_form = NewsitemForm()
+        return render_template('news/create.html', newsitem_form=newsitem_form)
 
     @login_required
+    @excomm_permission.require()
     def post(self):
         newsitem_form = NewsitemForm()
         newsitem = Newsitem()
 
-        if newsitem.can_be_edited_by_current_user and newsitem_form.validate_on_submit():
+        if newsitem_form.validate_on_submit():
             newsitem_form.populate_obj(newsitem)
 
             # Add user_id
@@ -40,42 +41,39 @@ class NewsView(FlaskView):
             db.session.commit()
             return redirect(url_for("core.NewsView:index"))
 
-        abort(403)
+        return redirect(url_for("core.NewsView:create"))
 
     @login_required
+    @excomm_permission.require()
     def update(self, id):
         newsitem = Newsitem.query.get_or_404(id)
-        if newsitem.can_be_edited_by_current_user:
-            newsitem_form = NewsitemForm(obj=newsitem)
-            return render_template('news/update.html', newsitem_form=newsitem_form, id=id)
-
-        abort(403)
+        newsitem_form = NewsitemForm(obj=newsitem)
+        return render_template('news/update.html', newsitem_form=newsitem_form, id=id)
 
     @login_required
+    @excomm_permission.require()
     def put(self, id):
         newsitem = Newsitem.query.get_or_404(id)
 
         newsitem_form = NewsitemForm()
-        if newsitem.can_be_edited_by_current_user and newsitem_form.validate_on_submit():
+        if newsitem_form.validate_on_submit():
             newsitem_form.populate_obj(newsitem)
 
             db.session.add(newsitem)
             db.session.commit()
             return redirect(url_for("core.NewsView:index"))
 
-        abort(403)
+        return redirect(url_for("core.NewsView:update", id))
 
     @login_required
+    @excomm_permission.require()
     def delete(self, id):
         newsitem = Newsitem.query.get_or_404(id)
 
-        # All Admins can Delete
-        if newsitem.can_be_edited_by_current_user:
-            db.session.delete(newsitem)
-            db.session.commit()
-            return redirect(url_for("core.NewsView:index"))
+        db.session.delete(newsitem)
+        db.session.commit()
+        return redirect(url_for("core.NewsView:index"))
 
-        abort(403)
 
 class UsersView(FlaskView):
     @route('/login', methods=["POST"])
@@ -87,11 +85,24 @@ class UsersView(FlaskView):
             if authenticated:
                 login_user(user, remember=login_form.remember_me.data)
 
+                # Tell Flask-Principal the identity changed
+                identity_changed.send(current_app._get_current_object(),
+                                  identity=Identity(user.user_id))
+
         return redirect(url_for("core.NewsView:index"))
 
     @login_required
     def logout(self):
         logout_user()
+
+        # Remove session keys set by Flask-Principal
+        for key in ('identity.name', 'identity.auth_type'):
+            session.pop(key, None)
+
+        # Tell Flask-Principal the user is anonymous
+        identity_changed.send(current_app._get_current_object(),
+                              identity=AnonymousIdentity())
+
         return redirect(url_for("core.NewsView:index"))
 
 

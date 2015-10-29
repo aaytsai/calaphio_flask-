@@ -1,11 +1,5 @@
-.navbar {
-	position: fixed; 
-	top: 0px; 
-	width: 100%; 	
-}
-
 #news {
-	top: 200px; 
+	top: 130px;
 	left: 50px; 
 	margin: 75px; 
 	position: relative; 

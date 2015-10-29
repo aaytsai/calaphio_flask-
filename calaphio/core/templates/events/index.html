@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('core.static', filename='css/events.css', v='1.0.0') }}">
+  <link rel="stylesheet" href="{{ url_for('core.static', filename='css/bootstrap-calendar/calendar.css') }}">
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <div class="page-header">
+
+          <div class="pull-right form-inline">
+            <div class="btn-group">
+              <button class="btn btn-primary" data-calendar-nav="prev"><< Prev</button>
+              <button class="btn" data-calendar-nav="today">Today</button>
+              <button class="btn btn-primary" data-calendar-nav="next">Next >></button>
+            </div>
+            <div class="btn-group">
+              <button class="btn btn-warning active" data-calendar-view="month">Month</button>
+              <button class="btn btn-warning" data-calendar-view="week">Week</button>
+              <button class="btn btn-warning" data-calendar-view="day">Day</button>
+            </div>
+          </div>
+
+          <h3></h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <div id="calendar"></div>
+      </div>
+    </div>
+  </div>
+  {{ super() }}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script type="text/javascript" src="{{ url_for('core.static', filename='js/bootstrap-calendar/calendar.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('core.static', filename='js/underscore-min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('core.static', filename='js/events.js') }}"></script>
+  <script type="text/javascript">
+    var calendar = $('#calendar').calendar(
+    {
+      events_source: '/api/events.php',
+      tmpl_path: '{{ url_for('core.static', filename='html') + '/bootstrap-calendar/' }}',
+      onAfterViewLoad: function(view) {
+        $('.page-header h3').text(this.getTitle());
+        $('.btn-group button').removeClass('active');
+        $('button[data-calendar-view="' + view + '"]').addClass('active');
+      },
+      classes: {
+        months: {
+          general: 'label'
+        }
+      }
+    });
+  </script>
+  <script type="text/javascript" src="{{ url_for('core.static', filename='js/bootstrap-calendar/app.js') }}"></script>
+{% endblock %}

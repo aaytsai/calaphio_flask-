@@ -6,17 +6,21 @@
 {% endblock %}
 
 {% block content %}
-  <div class="row">
-    <form method="POST" action="{{ url_for("core.NewsView:post") }}">
-      {{ login_form.hidden_tag() }}
-      {{ wtf.form_errors(newsitem_form, hiddens="only") }}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <form method="POST" action="{{ url_for("core.NewsView:post") }}">
+          {{ login_form.hidden_tag() }}
+          {{ wtf.form_errors(newsitem_form, hiddens="only") }}
 
-      {{ wtf.form_field(newsitem_form.title) }}
-      {{ wtf.form_field(newsitem_form.body) }}
-      {{ wtf.form_field(newsitem_form.active) }}
-      {{ wtf.form_field(newsitem_form.pledge) }}
-      {{ wtf.form_field(newsitem_form.everyone) }}
-      {{ wtf.form_field(newsitem_form.submit) }}
-    </form>
+          {{ wtf.form_field(newsitem_form.title) }}
+          {{ wtf.form_field(newsitem_form.body) }}
+          {{ wtf.form_field(newsitem_form.active) }}
+          {{ wtf.form_field(newsitem_form.pledge) }}
+          {{ wtf.form_field(newsitem_form.everyone) }}
+          {{ wtf.form_field(newsitem_form.submit) }}
+        </form>
+      </div>
+    </div>
   </div>
 {% endblock %}

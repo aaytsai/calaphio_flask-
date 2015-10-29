@@ -5,7 +5,7 @@ from flask_principal import identity_changed, AnonymousIdentity, Identity
 
 from calaphio import db
 from calaphio.core.forms import LoginForm, NewsitemForm
-from calaphio.core.models import Newsitem, User
+from calaphio.core.models import Newsitem, User, CalendarEvent
 from calaphio.extensions import excomm_permission
 
 core = Blueprint('core', __name__, template_folder='templates', static_folder="static", static_url_path='/static/core',
@@ -75,6 +75,14 @@ class NewsView(FlaskView):
         return redirect(url_for("core.NewsView:index"))
 
 
+class EventsView(FlaskView):
+
+    def index(self):
+        events = db.session.query(CalendarEvent).order_by(CalendarEvent.created_at.desc()).limit(100)
+
+        return render_template('events/index.html', events=events)
+
+
 class UsersView(FlaskView):
     @route('/login', methods=["POST"])
     def login(self):
@@ -107,8 +115,8 @@ class UsersView(FlaskView):
 
 
 NewsView.register(core)
+EventsView.register(core)
 UsersView.register(core)
-
 
 # Home page is just the main news page for now
 @core.route('/')

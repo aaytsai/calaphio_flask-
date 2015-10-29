@@ -98,6 +98,12 @@ class Role(db.Model):
     group_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
 
+class CalendarEvent(TimestampMixin, db.Model):
+    __tablename__ = "apo_calendar_event"
+
+    event_id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+
 
 
 

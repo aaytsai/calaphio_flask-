@@ -92,6 +92,12 @@
 
 .navbar {
     margin-bottom: 0px;
+	position: fixed;
+	top: 0px;
+	width: 100%;
+}
+body {
+    padding-top: 70px;
 }
 
 .nav {
@@ -99,12 +105,6 @@
     list-style-type: disc;
     -webkit-margin-start: 0px;
     -webkit-padding-start: 0px;
-}
-
-.row {
-    width: 90%;
-    margin: auto;
-    margin-top: 75px;
 }
 
 #message {

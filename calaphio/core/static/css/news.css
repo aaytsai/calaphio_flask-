@@ -1,7 +1,39 @@
+.navbar {
+	position: fixed; 
+	top: 0px; 
+	width: 100%; 
+	
+}
+
+#news {
+	top: 270px; 
+	margin: 50px; 	
+	position: relative; 
+	z-index: -10; 
+}
+
 .newsitem {
+
+
+	margin-bottom: 20px; 
+	padding: 40px; 
+	/* border: 1px solid #c0c0c0; */ 
+	border-radius: 2px;
+	background-color: #f0f8ff; 
+	
 
 }
 
 .newsitem .date {
     color: gray;
+}
+
+
+.newsitem h2 {
+    text-transform: uppercase; 
+}
+
+.newsitem .body {
+	margin-top: 30px; 
+	margin-left: 30px; 
 }

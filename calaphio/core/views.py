@@ -1,5 +1,7 @@
+from datetime import datetime
+
 from flask_login import login_user, login_required, logout_user, current_user
-from flask import Blueprint, url_for, redirect, render_template, abort, session, current_app
+from flask import Blueprint, url_for, redirect, render_template, abort, session, current_app, jsonify, request
 from flask_classy import FlaskView, route
 from flask_principal import identity_changed, AnonymousIdentity, Identity
 
@@ -81,6 +83,37 @@ class EventsView(FlaskView):
         events = db.session.query(CalendarEvent).order_by(CalendarEvent.created_at.desc()).limit(100)
 
         return render_template('events/index.html', events=events)
+
+    def get_events(self):
+        ret = dict()
+
+        begin = datetime.fromtimestamp(long(request.args.get('from')) / 1000.0)
+        end = datetime.fromtimestamp(long(request.args.get('to')) / 1000.0)
+        if begin is None or end is None:
+            ret['success'] = 0
+            ret['error'] = "Did not set 'to' and 'from' query parameters"
+        else:
+            # Get rid of disabled/deleted events
+            # Need to show deleted events for admins though
+            db_events = db.session.query(CalendarEvent.event_id, CalendarEvent.title, CalendarEvent.start_at, CalendarEvent.end_at)\
+                .filter(CalendarEvent.start_at >= begin, CalendarEvent.end_at < end).all()
+            events = []
+            print len(db_events)
+            for db_event in db_events:
+                event = dict()
+                event['id'] = db_event.event_id
+                event['title'] = db_event.title
+                event['url'] = "WTF"
+                event['class'] = "event-success"
+                event['start'] = long(db_event.start_at.strftime("%s")) * 1000
+                event['end'] = long(db_event.end_at.strftime("%s")) * 1000
+
+                events.append(event)
+
+            ret['success'] = 1
+            ret['result'] = events
+
+        return jsonify(**ret);
 
 
 class UsersView(FlaskView):

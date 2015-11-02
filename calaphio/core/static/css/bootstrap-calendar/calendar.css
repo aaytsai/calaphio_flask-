@@ -1,5 +1,4 @@
 [class*="cal-cell"] {
-  float: left;
   margin-left: 0;
   min-height: 1px;
 }
@@ -17,12 +16,10 @@
   clear: both;
 }
 .cal-row-fluid [class*="cal-cell"] {
-  display: block;
   width: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  float: left;
   margin-left: 0%;
   *margin-left: -0.05213764337851929%;
 }
@@ -195,7 +192,6 @@
   left: 92.85714285714285%;
 }
 .events-list {
-  position: absolute;
   bottom: 0;
   left: 0;
   overflow: hidden;
@@ -312,15 +308,15 @@
 }
 .event {
   display: block;
-  background-color: #c3c3c3;
-  width: 12px;
-  height: 12px;
+  width: 100%;
   margin-right: 2px;
   margin-bottom: 2px;
   -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
   box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
   border-radius: 8px;
   border: 1px solid #ffffff;
+  padding: 5px;
+  font-size: 12px;
 }
 .event-block {
   display: block;
@@ -335,7 +331,7 @@
   background-color: #ad2121;
 }
 .event-info {
-  background-color: #1e90ff;
+ color: #1e90ff;
 }
 .event-warning {
   background-color: #e3bc08;
@@ -344,7 +340,7 @@
   background-color: #1b1b1b;
 }
 .event-success {
-  background-color: #006400;
+  color: #006400;
 }
 .event-special {
   background-color: #800080;
@@ -392,14 +388,14 @@
   background-color: #fafafa;
 }
 .cal-month-day {
-  height: 100px;
+  height: 100%;
 }
 [class*="cal-cell"]:hover {
   background-color: #ededed;
 }
 .cal-year-box [class*="span"],
 .cal-month-box [class*="cal-cell"] {
-  min-height: 100px;
+  height: 100px;
   border-right: 1px solid #e1e1e1;
   position: relative;
 }
@@ -441,6 +437,7 @@ span[data-cal-date] {
   -o-transition: all 0.1s ease-in-out;
   margin-top: 15px;
   margin-right: 15px;
+  margin-bottom: 0.7em;
 }
 span[data-cal-date]:hover {
   opacity: 1;
@@ -457,6 +454,7 @@ span[data-cal-date]:hover {
 }
 .cal-month-box .cal-day-today span[data-cal-date] {
   font-size: 1.9em;
+  margin-bottom: 0px;
 }
 .cal-day-holiday span[data-cal-date] {
   color: #800080;
@@ -500,8 +498,10 @@ span[data-cal-date]:hover {
   line-height: 22px;
 }
 .events-list {
-  max-height: 47px;
   padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  width: 100%;
 }
 .cal-column {
   border-left: 1px solid #e1e1e1;
@@ -512,4 +512,22 @@ a.cal-event-week {
 }
 .badge-important {
   background-color: #b94a48;
+}
+
+.cal-context {
+  display: table;
+  border-collapse: collapse;
+}
+
+.cal-row-fluid {
+  display: table-row;
+}
+
+.cal-cell1 {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.cal-month-box {
+  display: table-row-group
 }

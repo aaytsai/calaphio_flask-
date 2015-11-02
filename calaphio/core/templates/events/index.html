@@ -2,7 +2,7 @@
 
 {% block styles %}
   {{ super() }}
-  <link rel="stylesheet" href="{{ url_for('core.static', filename='css/events.css', v='1.0.0') }}">
+  <link rel="stylesheet" href="{{ url_for('core.static', filename='css/events.css', v='1.0.1') }}">
   <link rel="stylesheet" href="{{ url_for('core.static', filename='css/bootstrap-calendar/calendar.css') }}">
 {% endblock %}
 
@@ -20,7 +20,6 @@
             </div>
             <div class="btn-group">
               <button class="btn btn-warning active" data-calendar-view="month">Month</button>
-              <button class="btn btn-warning" data-calendar-view="week">Week</button>
               <button class="btn btn-warning" data-calendar-view="day">Day</button>
             </div>
           </div>
@@ -47,7 +46,7 @@
   <script type="text/javascript">
     var calendar = $('#calendar').calendar(
     {
-      events_source: '/api/events.php',
+      events_source: '/events/get_events',
       tmpl_path: '{{ url_for('core.static', filename='html') + '/bootstrap-calendar/' }}',
       onAfterViewLoad: function(view) {
         $('.page-header h3').text(this.getTitle());
@@ -58,7 +57,25 @@
         months: {
           general: 'label'
         }
-      }
+      },
+      time_start:         '00:00',
+		  time_end:           '24:00',
+		  views: {
+        year:  {
+          slide_events: 1,
+          enable:       1
+        },
+        month: {
+          slide_events: 0,
+          enable:       1
+        },
+        week:  {
+          enable: 0
+        },
+        day:   {
+          enable: 1
+        }
+      },
     });
   </script>
   <script type="text/javascript" src="{{ url_for('core.static', filename='js/bootstrap-calendar/app.js') }}"></script>

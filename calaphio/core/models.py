@@ -103,6 +103,8 @@ class CalendarEvent(TimestampMixin, db.Model):
 
     event_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
+    start_at = db.Column(db.DateTime, nullable=True)
+    end_at = db.Column(db.DateTime, nullable=True)
 
 
 

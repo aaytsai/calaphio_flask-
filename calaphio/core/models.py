@@ -2,6 +2,7 @@ import hashlib
 
 from flask_login import UserMixin, current_user
 from sqlalchemy import orm, ForeignKey
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import relationship
 
 from calaphio import db, TimestampMixin
@@ -64,7 +65,7 @@ class User(UserMixin, db.Model):
     # Relationships <3
     active_member = relationship(ActiveMember, uselist=False, backref="user")
     pledge_member = relationship(PledgeMember, uselist=False, backref="user")
-    posts = relationship(Newsitem, backref="poster")
+    posts = relationship('Newsitem', backref="poster")
     roles = relationship("Role", secondary=user_roles, backref="users")
 
     @classmethod
@@ -101,12 +102,38 @@ class Role(db.Model):
 class CalendarEvent(TimestampMixin, db.Model):
     __tablename__ = "apo_calendar_event"
 
+    # Event Metadata
     event_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     start_at = db.Column(db.DateTime, nullable=True)
     end_at = db.Column(db.DateTime, nullable=True)
+    deleted = db.Column(db.Boolean, nullable=False, default=False)
+    location = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+
+    # Signup Logic
+    signup_begin = db.Column(db.Date, nullable=True)
+    signup_cutoff = db.Column(db.Date, nullable=True)
+    signup_limit = db.Column(db.Integer, nullable=False, default=0)
+
+    # Relationships <3
+
+    @property
+    def chairs(self):
+        return [event_attend for event_attend in self.event_attends if event_attend.chair]
+
+    def attendees(self):
+        return [event_attend for event_attend in self.event_attends]
 
 
+class CalendarAttend(db.Model):
+    __tablename__ = "apo_calendar_attend"
 
+    event_id = db.Column(db.Integer, ForeignKey('apo_calendar_event.event_id'), primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey('apo_users.user_id'), primary_key=True)
+    chair = db.Column(db.Boolean, nullable=False, default=False)
+
+    event = relationship('CalendarEvent', backref="event_attends")
+    attendee = relationship('User')
 
 

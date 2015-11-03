@@ -80,5 +80,4 @@ def navbar():
     else:
         return Navbar(Link("Members@Calaphio", "/"),
                       View("News", "core.NewsView:index"),
-                      View("Calendar", "core.EventsView:index"),
                       Tag(tags.a, "Login", href="#", data_toggle="modal", data_target="#loginModal"))

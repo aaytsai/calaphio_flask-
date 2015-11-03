@@ -531,3 +531,14 @@ a.cal-event-week {
 .cal-month-box {
   display: table-row-group
 }
+
+.modal-body {
+  padding-top: 0px;
+  width: 100%;
+  height: 80%;
+  overflow-y: auto;
+}
+
+.modal-dialog {
+  width: 60%;
+}

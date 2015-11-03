@@ -7,7 +7,7 @@ SERVER_NAME = "localhost:5000"
 
 # Flask-SQLAlchemy
 SQLALCHEMY_DATABASE_URI='mysql+mysqldb://website@localhost/website'
-SQLALCHEMY_ECHO=False
+SQLALCHEMY_ECHO=True
 
 # Flask-Login
 LOGIN_DISABLED = False

@@ -79,11 +79,13 @@ class NewsView(FlaskView):
 
 class EventsView(FlaskView):
 
+    @login_required
     def index(self):
         events = db.session.query(CalendarEvent).order_by(CalendarEvent.created_at.desc()).limit(100)
 
         return render_template('events/index.html', events=events)
 
+    @login_required
     def get_events(self):
         ret = dict()
 
@@ -93,17 +95,15 @@ class EventsView(FlaskView):
             ret['success'] = 0
             ret['error'] = "Did not set 'to' and 'from' query parameters"
         else:
-            # Get rid of disabled/deleted events
             # Need to show deleted events for admins though
             db_events = db.session.query(CalendarEvent.event_id, CalendarEvent.title, CalendarEvent.start_at, CalendarEvent.end_at)\
-                .filter(CalendarEvent.start_at >= begin, CalendarEvent.end_at < end).all()
+                .filter(CalendarEvent.start_at >= begin, CalendarEvent.end_at < end, CalendarEvent.deleted == False).all()
             events = []
-            print len(db_events)
             for db_event in db_events:
                 event = dict()
                 event['id'] = db_event.event_id
                 event['title'] = db_event.title
-                event['url'] = "WTF"
+                event['url'] = url_for("core.EventsView:partial_get", id=db_event.event_id)
                 event['class'] = "event-success"
                 event['start'] = long(db_event.start_at.strftime("%s")) * 1000
                 event['end'] = long(db_event.end_at.strftime("%s")) * 1000
@@ -113,8 +113,12 @@ class EventsView(FlaskView):
             ret['success'] = 1
             ret['result'] = events
 
-        return jsonify(**ret);
+        return jsonify(**ret)
 
+    def partial_get(self, id):
+        event = CalendarEvent.query.options(db.joinedload_all('event_attends.attendee')).get_or_404(id)
+
+        return render_template('events/partial_get.html', event=event)
 
 class UsersView(FlaskView):
     @route('/login', methods=["POST"])

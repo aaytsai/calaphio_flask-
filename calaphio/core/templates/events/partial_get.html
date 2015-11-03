@@ -1,0 +1,27 @@
+<div class="event_detail container-fluid">
+  <div class="event_header row">
+    <div class="event_metadata col-md-7">
+      <h2>{{ event.title }}</h2>
+      <p>
+        <strong><span class="event_location">{{ event.location | default('TBA', true) | sanitize_html }}</span></strong>
+        <span class="event_time">{{ event.start_at.strftime("%l:%M %p") }} to {{ event.end_at.strftime("%l:%M %p") }}</span>
+      </p>
+      <p class="event_chairs">Chairs = {{ event.chairs | map(attribute="attendee") | map(attribute="fullname") | join(', ') }}</p>
+      <p class="event_cutoff">Cutoff = {{ event.signup_cutoff.strftime("%x") if event.signup_cutoff else None }}</p>
+      <p class="event_limit">Limit = {{ event.signup_limit }}</p>
+    </div>
+    <div class="event_actions col-md-5">
+
+    </div>
+  </div>
+  <div class="event_about">
+    <h2>About The Event</h2>
+    <div class="event_description">
+      <h4>Description</h4>
+      <p>{{ event.description | sanitize_html }}</p>
+    </div>
+    <div class="event_instructions">
+      <h4>Instructions/Notes</h4>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 from fabric.api import env
+from fabric.contrib.project import rsync_project
 from fabric.operations import run, put
 
 env.hosts = ['calaphio2@calaphio.com']
@@ -6,7 +7,7 @@ env.hosts = ['calaphio2@calaphio.com']
 
 def deploy():
     # Transfer App
-    put('calaphio', 'members2.calaphio.com')
+    rsync_project("members2.calaphio.com", local_dir="calaphio", delete=True, exclude=['*.pyc','.DS_Store'])
 
     # Transfer Requirements
     put('requirements.txt', 'members2.calaphio.com')

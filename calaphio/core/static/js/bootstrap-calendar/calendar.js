@@ -995,6 +995,7 @@ if(!String.prototype.formatNum) {
 			}
 
 			if(!modal.data('handled.bootstrap-calendar') || (modal.data('handled.bootstrap-calendar') && modal.data('handled.event-id') != event.id)) {
+				modal.unbind().on('show.bs.modal');
 				modal
 					.on('show.bs.modal', function() {
 						var modal_body = $(this).find('.modal-body');

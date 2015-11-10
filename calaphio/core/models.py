@@ -1,9 +1,10 @@
+import datetime
 import hashlib
 
 from flask_login import UserMixin, current_user
 from sqlalchemy import orm, ForeignKey
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 
 from calaphio import db, TimestampMixin
 from calaphio.extensions import admin_permission, active_permission, pledge_permission
@@ -57,6 +58,8 @@ class User(UserMixin, db.Model):
     # User Info
     firstname = db.Column(db.String(255), nullable=False)
     lastname = db.Column(db.String(255), nullable=False)
+    pledgeclass = db.Column(db.String(255), nullable=False)
+    cellphone = db.Column(db.String(255), nullable=False)
 
     # Fields used to determine if active
     disabled = db.Column(db.Boolean, nullable=False)
@@ -119,11 +122,22 @@ class CalendarEvent(TimestampMixin, db.Model):
     # Relationships <3
 
     @property
-    def chairs(self):
+    def chair_attends(self):
         return [event_attend for event_attend in self.event_attends if event_attend.chair]
 
-    def attendees(self):
-        return [event_attend for event_attend in self.event_attends]
+    @property
+    def attends(self):
+        if self.signup_limit > 0:
+            return self.event_attends[:self.signup_limit]
+        else:
+            return self.event_attends
+
+    @property
+    def waitlist(self):
+        if self.signup_limit > 0:
+            return self.event_attends[self.signup_limit:]
+        else:
+            return None
 
 
 class CalendarAttend(db.Model):
@@ -132,8 +146,9 @@ class CalendarAttend(db.Model):
     event_id = db.Column(db.Integer, ForeignKey('apo_calendar_event.event_id'), primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('apo_users.user_id'), primary_key=True)
     chair = db.Column(db.Boolean, nullable=False, default=False)
+    signup_time = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
 
-    event = relationship('CalendarEvent', backref="event_attends")
+    event = relationship('CalendarEvent', backref=backref("event_attends", order_by="CalendarAttend.signup_time"))
     attendee = relationship('User')
 
 

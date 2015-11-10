@@ -11,6 +11,7 @@ def deploy():
 
     # Transfer Requirements
     put('requirements.txt', 'members2.calaphio.com')
+    put('manage.py', 'members2.calaphio.com')
 
     # Activate Source & Install Requirements
     run('source members2.calaphio.com/bin/activate && pip install -r members2.calaphio.com/requirements.txt')

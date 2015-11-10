@@ -6,7 +6,7 @@
         <strong><span class="event_location">{{ event.location | default('TBA', true) | sanitize_html }}</span></strong>
         <span class="event_time">{{ event.start_at.strftime("%l:%M %p") }} to {{ event.end_at.strftime("%l:%M %p") }}</span>
       </p>
-      <p class="event_chairs">Chairs = {{ event.chairs | map(attribute="attendee") | map(attribute="fullname") | join(', ') }}</p>
+      <p class="event_chairs">Chairs = {{ event.chair_attends | map(attribute="attendee") | map(attribute="fullname") | join(', ') }}</p>
       <p class="event_cutoff">Cutoff = {{ event.signup_cutoff.strftime("%x") if event.signup_cutoff else None }}</p>
       <p class="event_limit">Limit = {{ event.signup_limit }}</p>
     </div>
@@ -14,6 +14,7 @@
 
     </div>
   </div>
+
   <div class="event_about">
     <h2>About The Event</h2>
     <div class="event_description">
@@ -24,4 +25,54 @@
       <h4>Instructions/Notes</h4>
     </div>
   </div>
+
+  <table class="event_attendees table table-condensed table-hover">
+    <caption>Signed Up</caption>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Pledge Class</th>
+        <th>Phone #</th>
+        <th>Signup Time</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for attend in event.attends %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>{{ attend.attendee.fullname }}</td>
+      <td>{{ attend.attendee.pledgeclass }}</td>
+      <td>{{ attend.attendee.cellphone }}</td>
+      <td>{{ attend.signup_time.strftime("%m-%d-%Y @%l:%M %p") }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% if event.waitlist %}
+  <table class="event_attendees table table-condensed table-hover">
+    <caption>Waitlist</caption>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Pledge Class</th>
+        <th>Phone #</th>
+        <th>Signup Time</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for attend in event.waitlist %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>{{ attend.attendee.fullname }}</td>
+      <td>{{ attend.attendee.pledgeclass }}</td>
+      <td>{{ attend.attendee.cellphone }}</td>
+      <td>{{ attend.signup_time.strftime("%m-%d-%Y @%l:%M %p") }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    {% endif %}
+  </table>
 </div>

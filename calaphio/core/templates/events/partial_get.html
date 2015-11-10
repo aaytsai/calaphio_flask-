@@ -59,12 +59,12 @@
         <th>Name</th>
         <th>Pledge Class</th>
         <th>Phone #</th>
-        <th>Signup Time</th>
+        <th>Signup Time</th>lass
       </tr>
     </thead>
     <tbody>
     {% for attend in event.waitlist %}
-    <tr>
+    <tr {{'class=success' if attend.attendee == current_user }}>
       <td>{{ loop.index }}</td>
       <td>{{ attend.attendee.fullname }}</td>
       <td>{{ attend.attendee.pledgeclass }}</td>

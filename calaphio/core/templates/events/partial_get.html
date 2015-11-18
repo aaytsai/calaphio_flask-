@@ -80,7 +80,7 @@
     <h2>Comments</h2>
     {% for comment in event.comments %}
     <div class="event_comment">
-      {{ comment.body }}
+      {{ comment.body | sanitize_html }}
       <div class="event_comment_sig">
         <strong>Posted By</strong> <span>{{ comment.poster.fullname + " " + comment.timestamp.strftime("%m-%d-%Y @%l:%M %p") }}</span>
       </div>

@@ -1,7 +1,7 @@
 <div class="event_detail container-fluid">
   <div class="event_header row">
     <div class="event_metadata col-md-7">
-      <h2>{{ event.title }}</h2>
+      <h2>{{ event.title | sanitize_html }}</h2>
       <p>
         <strong><span class="event_location">{{ event.location | default('TBA', true) | sanitize_html }}</span></strong>
         <span class="event_time">{{ event.start_at.strftime("%l:%M %p") }} to {{ event.end_at.strftime("%l:%M %p") }}</span>

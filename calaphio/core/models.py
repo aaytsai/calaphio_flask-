@@ -152,3 +152,17 @@ class CalendarAttend(db.Model):
     attendee = relationship('User')
 
 
+class CalendarComment(db.Model):
+    __tablename__ = "apo_calendar_comment"
+
+    comment_id = db.Column(db.Integer, primary_key=True)
+    event_id = db.Column(db.Integer, ForeignKey('apo_calendar_event.event_id'), nullable=False)
+    user_id = db.Column(db.Integer, ForeignKey('apo_users.user_id'), nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
+    body = db.Column(db.Text, nullable=False)
+    deleted = db.Column(db.Boolean, nullable=False, default=False)
+
+    event = relationship('CalendarEvent', backref=backref("comments", order_by="CalendarComment.timestamp"))
+    poster = relationship('User')
+
+

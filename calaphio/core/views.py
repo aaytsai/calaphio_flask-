@@ -116,7 +116,8 @@ class EventsView(FlaskView):
         return jsonify(**ret)
 
     def partial_get(self, id):
-        event = CalendarEvent.query.options(db.joinedload_all('event_attends.attendee')).get_or_404(id)
+        event = CalendarEvent.query.options(db.joinedload_all('event_attends.attendee'),
+                                            db.joinedload_all('comments.poster')).get_or_404(id)
 
         return render_template('events/partial_get.html', event=event)
 

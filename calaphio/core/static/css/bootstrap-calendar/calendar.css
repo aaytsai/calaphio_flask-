@@ -542,3 +542,7 @@ a.cal-event-week {
 .modal-dialog {
   width: 60%;
 }
+
+.event_comment {
+  margin: 10px;
+}

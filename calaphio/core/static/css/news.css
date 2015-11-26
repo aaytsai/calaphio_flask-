@@ -4,6 +4,7 @@ body {
 
 #news {
 	position: relative; 
+	top: -10px; 
 	margin: 0px auto; 
 	position: relative;
 	width: 75%;

@@ -4,8 +4,8 @@
     height: 200px;
     width: 100%;
     background-position: center center;
-    position: fixed; 
-    top: 52px; 
+    position: relative; 
+    top: -37px; 
 }
 
 #splash h1 {

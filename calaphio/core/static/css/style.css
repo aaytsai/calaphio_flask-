@@ -1,3 +1,12 @@
+.navbar li.active {
+    border-bottom: 3px solid #337ab7;
+}
+
+.navbar li:hover {
+    border-bottom: 3px solid #337ab7;  
+}
+
+
 #splash {
     background: url(http://live.calaphio.com/assets/covers/about.png);
     background-size: cover;

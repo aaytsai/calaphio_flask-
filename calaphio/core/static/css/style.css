@@ -1,11 +1,11 @@
 #splash {
     background: url(http://live.calaphio.com/assets/covers/about.png);
     background-size: cover;
-    height: 200px;
+    height: 250px;
     width: 100%;
     background-position: center center;
-    position: fixed; 
-    top: 52px; 
+    position: relative; 
+    top: -38px; 
 }
 
 #splash h1 {
@@ -16,7 +16,7 @@
     color: #F5F5F5;
     text-shadow: 2px 2px black;
     position: relative; 
-    top: 30px; 
+    top: 70px; 
 }
 
 
@@ -92,10 +92,10 @@
 
 .navbar {
     margin-bottom: 0px;
-	position: fixed;
-	top: 0px;
-	width: 100%;
-	z-index: 10;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 10;
 }
 body {
     padding-top: 70px;
@@ -182,6 +182,9 @@ body {
     font-size: 18px;
     line-height: 32px;
 }
+
+
+
 
 
 

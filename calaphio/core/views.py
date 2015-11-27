@@ -96,7 +96,7 @@ class EventsView(FlaskView):
             ret['error'] = "Did not set 'to' and 'from' query parameters"
         else:
             # Need to show deleted events for admins though
-            db_events = db.session.query(CalendarEvent.event_id, CalendarEvent.title, CalendarEvent.start_at, CalendarEvent.end_at)\
+            db_events = db.session.query(CalendarEvent)\
                 .filter(CalendarEvent.start_at >= begin, CalendarEvent.end_at < end, CalendarEvent.deleted == False).all()
             events = []
             for db_event in db_events:
@@ -104,7 +104,7 @@ class EventsView(FlaskView):
                 event['id'] = db_event.event_id
                 event['title'] = db_event.title
                 event['url'] = url_for("core.EventsView:partial_get", id=db_event.event_id)
-                event['class'] = "event-success"
+                event['class'] = "event-" + db_event.event_type
                 event['start'] = long(db_event.start_at.strftime("%s")) * 1000
                 event['end'] = long(db_event.end_at.strftime("%s")) * 1000
 

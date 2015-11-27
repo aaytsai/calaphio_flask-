@@ -9,6 +9,15 @@ from sqlalchemy.orm import relationship, backref
 from calaphio import db, TimestampMixin
 from calaphio.extensions import admin_permission, active_permission, pledge_permission
 
+class EventType(object):
+    SERVICE = "service"
+    FELLOWSHIP = "fellowship"
+    FUNDRAISER = "fundraiser"
+    RUSH = "rush"
+    ALUMNI = "alumni"
+    INTERCHAPTER = "interchapter"
+    LEADERSHIP = "leadership"
+    UNKNOWN = "unknown"
 
 class Newsitem(TimestampMixin, db.Model):
     __tablename__ = "newsitems"
@@ -114,6 +123,22 @@ class CalendarEvent(TimestampMixin, db.Model):
     location = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=False)
 
+    #Event Types
+    type_service_chapter = db.Column(db.Boolean, nullable=False, default=False)
+    type_service_campus = db.Column(db.Boolean, nullable=False, default=False)
+    type_service_community = db.Column(db.Boolean, nullable=False, default=False)
+    type_service_country = db.Column(db.Boolean, nullable=False, default=False)
+
+    type_fellowship = db.Column(db.Boolean, nullable=False, default=False)
+    type_interchapter = db.Column(db.Boolean, nullable=False, default=False)
+    type_fundraiser = db.Column(db.Boolean, nullable=False, default=False)
+    type_rush = db.Column(db.Boolean, nullable=False, default=False)
+    type_alumni = db.Column(db.Boolean, nullable=False, default=False)
+    type_leadership = db.Column(db.Boolean, nullable=False, default=False)
+
+    type_active_meeting = db.Column(db.Boolean, nullable=False, default=False)
+    type_pledge_meeting = db.Column(db.Boolean, nullable=False, default=False)
+
     # Signup Logic
     signup_begin = db.Column(db.Date, nullable=True)
     signup_cutoff = db.Column(db.Date, nullable=True)
@@ -138,6 +163,27 @@ class CalendarEvent(TimestampMixin, db.Model):
             return self.event_attends[self.signup_limit:]
         else:
             return None
+
+    @property
+    def event_type(self):
+        if self.type_service_chapter or self.type_service_campus or \
+                self.type_service_community or self.type_service_country:
+            return EventType.SERVICE
+        elif self.type_fellowship:
+            return EventType.FELLOWSHIP
+        elif self.type_fundraiser:
+            return EventType.FUNDRAISER
+        elif self.type_rush:
+            return EventType.RUSH
+        elif self.type_alumni:
+            return EventType.ALUMNI
+        elif self.type_interchapter:
+            return EventType.INTERCHAPTER
+        elif self.type_leadership:
+            return self.type_leadership
+        else:
+            return EventType.UNKNOWN
+
 
 
 class CalendarAttend(db.Model):

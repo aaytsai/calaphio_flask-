@@ -447,10 +447,17 @@ span[data-cal-date]:hover {
   cursor: default;
 }
 .cal-day-today {
-  background-color: #e8fde7;
+  #background-color: #e8fde7;
 }
 .cal-day-today span[data-cal-date] {
-  color: darkgreen;
+  color: white;
+  background-color: #ff0000;
+  width: 38px;
+  height: 38px;
+  -moz-border-radius: 70px;
+  -webkit-border-radius: 70px;
+  border-radius: 70px;
+  text-align: center;
 }
 .cal-month-box .cal-day-today span[data-cal-date] {
   font-size: 1.9em;
@@ -545,4 +552,26 @@ a.cal-event-week {
 
 .event_comment {
   margin: 10px;
+}
+
+.event-service {
+  color: #0000CC;
+}
+#cal-day-box .day-highlight.dh-event-service {
+  border: 1px solid #0000CC;
+}
+.day-highlight.dh-event-service:hover,
+.day-highlight.dh-event-service {
+  background-color: #b0c4de;
+}
+
+.event-fellowship {
+  color: #9933FF;
+}
+#cal-day-box .day-highlight.dh-event-fellowship {
+  border: 1px solid #9933FF;
+}
+.day-highlight.dh-event-fellowship:hover,
+.day-highlight.dh-event-fellowship {
+  background-color: #E5CCFF;
 }

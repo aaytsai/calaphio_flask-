@@ -180,7 +180,7 @@ class CalendarEvent(TimestampMixin, db.Model):
         elif self.type_interchapter:
             return EventType.INTERCHAPTER
         elif self.type_leadership:
-            return self.type_leadership
+            return EventType.LEADERSHIP
         else:
             return EventType.UNKNOWN
 

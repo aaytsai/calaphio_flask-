@@ -1,3 +1,6 @@
+import re
+
+from BeautifulSoup import PageElement
 from flask import Flask
 from flask_login import current_user
 from flask_nav import register_renderer
@@ -10,6 +13,10 @@ from calaphio.core.models import User
 from core import core
 from extensions import db, login_manager, csrf, bootstrap, nav, BetterBootstrapRenderer, principal
 
+# Monkey Patch this shit so links work
+PageElement.BARE_AMPERSAND_OR_BRACKET = re.compile("("
+                                           + "&(?!#\d+;|#x[0-9a-fA-F]+;|\w+;)"
+                                           + ")")
 
 class MethodRewriteMiddleware(object):
     def __init__(self, app):
@@ -25,7 +32,7 @@ class MethodRewriteMiddleware(object):
         return self.app(environ, start_response)
 
 
-scrubber = Scrubber()
+scrubber = Scrubber(autolink=True)
 
 
 # Jinja filter!
